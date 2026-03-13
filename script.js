@@ -13,8 +13,7 @@ const gameBoard = (()=> {
 const players = (() => {
 
     const Player = (isTurn) => {
-        this.isTurn = isTurn;
-        const switchTurn = () => this.isTurn = !isTurn;
+        const switchTurn = () => isTurn = !isTurn;
         const getIsTurn = () => isTurn;
 
         return {switchTurn, getIsTurn};
@@ -25,6 +24,10 @@ const players = (() => {
 })();
 
 const playGame = (() => {
+
+    const checkForWin = () => {
+
+    };
 
     let player1 = players.Player(true);
     let player2 = players.Player(false);
@@ -44,11 +47,7 @@ const playGame = (() => {
             player2.switchTurn();
 
             gameBoard.display();
-        }
-
-        // Play Round function switches between player 1 and 2 based off the turn attribute
-
-        if (player2.getIsTurn() == true) {
+        } else if (player2.getIsTurn() == true) {
             console.log("It's player2's turn");
             
             gameBoard.gameBoard[parseInt(index)] = "O";
@@ -62,6 +61,10 @@ const playGame = (() => {
 
             gameBoard.display();
         }
+
+        // Play Round function switches between player 1 and 2 based off the turn attribute
+
+        
     }
 
     return {playRound};
