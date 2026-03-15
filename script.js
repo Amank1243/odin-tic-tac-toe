@@ -37,11 +37,19 @@ const playGame = (() => {
         if (player1.getIsTurn() == true) {
             console.log("It's player1's turn");
 
+             if (parseInt(index) > 8) {
+                throw new Error("Value is outside of the gameboard");
+            }
+
+            console.log("Throw should stop this message for player 1");
+
+            if (gameBoard.gameBoard[index].includes("O") || gameBoard.gameBoard[index].includes("X")) {
+                throw console.error("Space already has a marker on it");
+            }
+
             gameBoard.gameBoard[parseInt(index)] = "X";
 
-            if (index > 8) {
-                throw console.error("Value is outside of the 0-8 length index");
-            }
+           
 
             player1.switchTurn();
             player2.switchTurn();
@@ -50,11 +58,15 @@ const playGame = (() => {
         } else if (player2.getIsTurn() == true) {
             console.log("It's player2's turn");
             
-            gameBoard.gameBoard[parseInt(index)] = "O";
-
-            if (index > 8) {
+            if (parseInt(index) > 8) {
                 throw console.error("Value is outside of the 0-8 length index");
+            };
+
+            if (gameBoard.gameBoard[index].includes("O") || gameBoard.gameBoard[index].includes("X")) {
+                throw new Error("Space already has a marker on it");
             }
+
+            gameBoard.gameBoard[parseInt(index)] = "O";
 
             player1.switchTurn();
             player2.switchTurn();
