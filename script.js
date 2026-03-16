@@ -1,17 +1,53 @@
+// 
+// GAMEBOARD 
+// 
+
 const gameBoard = (()=> {
     let gameBoard = new Array(9).fill(" ");
+
+    const grid = document.querySelector(".gameboard");
+
+    
+
+    let gridSquares = [];
+    
+
+    const renderGrid = (()=> {
+        for (const item of gameBoard) {
+            const square = document.createElement("div");
+            square.className = "square";
+
+            gridSquares.push(square);
+            grid.appendChild(square);
+        };
+    })();
+
+    const getIndexOfSquare = () => {
+            let index = 0
+            for (const square of gridSquares) {
+                square.addEventListener("click", ()=>{
+                    index = gridSquares.indexOf(square);
+                    console.log(index);
+                });
+            }
+
+            return index;
+        };
 
     const display = () => {
         console.log('|' +gameBoard[0] +'|' + gameBoard[1] + '|' + gameBoard[2] + '|' +'\n' +
                     '|' + gameBoard[3] + '|' + gameBoard[4] + '|' + gameBoard[5] + '|' +'\n' +
                     '|' + gameBoard[6] + '|' + gameBoard[7] + '|' + gameBoard[8] + '|' + '\n')
-    }
+    };
 
-    return {gameBoard, display};
+    return {gameBoard, display, getIndexOfSquare};
 })();
 
-const players = (() => {
+// 
+// PLAYERS
+// 
 
+const players = (() => {
     const Player = (isTurn) => {
         const switchTurn = () => isTurn = !isTurn;
         const getIsTurn = () => isTurn;
@@ -23,8 +59,11 @@ const players = (() => {
 
 })();
 
-const playGame = (() => {
+// 
+// PLAYGAME
+// 
 
+const playGame = (() => {
     let player1 = players.Player(true);
     let player2 = players.Player(false);
 
@@ -56,8 +95,9 @@ const playGame = (() => {
         }
     };
 
-    let playRound = (index) => {
-
+    let playRound = () => {
+        index = getIndexOfSquare();
+        
         if (player1.getIsTurn() == true) {
 
             if (gameOver == true) {
@@ -85,7 +125,6 @@ const playGame = (() => {
 
             
         } else if (player2.getIsTurn() == true) {
-
              if (gameOver == true) {
                 console.log("The game has ended");
                 return;
@@ -110,5 +149,5 @@ const playGame = (() => {
             player2.switchTurn();
         };
     };
-    return {playRound};
+    // return {playRound};
 })();
