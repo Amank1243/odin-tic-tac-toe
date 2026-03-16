@@ -22,7 +22,7 @@ div.gameboard {
     align-items: center;
     justify-content: center;
 
-    border: 0.1rem solid white;
+    border: 0.1rem solid blanchedalmond;
    
     height: 20vh;
     width: 20vw;
@@ -30,4 +30,39 @@ div.gameboard {
     color: blanchedalmond;
     font-size: 3rem;
     font-weight: bold;
+}
+
+p.gameText {
+    display: flex;
+
+    color: blanchedalmond;
+    
+    font-size: 4rem;
+    
+    align-items: center;
+    justify-content: center;
+}
+
+button.changePlayerName {
+
+    background-color: black;
+    border: 0.1rem solid blanchedalmond;
+    
+    padding: 2vh 2vw;
+
+    border-radius: 5em;
+
+    font: bold 3rem;
+    color: blanchedalmond;
+
+
+}
+
+div.changePlayerName {
+    display: flex;
+
+    margin-top: 3vh;
+
+    justify-content: center;
+    align-items: center;
 }
