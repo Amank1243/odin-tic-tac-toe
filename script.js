@@ -5,9 +5,12 @@
 const gameBoard = (()=> {
     let gameBoard = new Array(9).fill(" ");
 
-    const grid = document.querySelector(".gameboard");    
+    const grid = document.querySelector(".gameboard");
+    const changeNameButton = document.querySelector("button.changePlayerName");
+    const modal = document.querySelector("dialog");
+    const submitButton = document.querySelector("button.submit");
+
     let gridSquares = [];
-    
 
     const renderGrid = (()=> {
         for (const item of gameBoard) {
@@ -26,6 +29,15 @@ const gameBoard = (()=> {
                     '|' + gameBoard[6] + '|' + gameBoard[7] + '|' + gameBoard[8] + '|' + '\n')
     };
 
+    changeNameButton.addEventListener("click", ()=>{
+        modal.showModal();
+    });
+
+    submitButton.addEventListener("click", (event)=>{
+        event.preventDefault();
+        modal.close();
+    })
+
     return {gameBoard, display, gridSquares};
 })();
 
@@ -35,13 +47,14 @@ const gameBoard = (()=> {
 
 const players = (() => {
 
-    const Player = (isTurn) => {
+    const Player = (isTurn, playerName) => {
         const switchTurn = () => isTurn = !isTurn;
         const getIsTurn = () => isTurn;
 
-        let playerName = " "; // Implement this when you need to add player names
+        const getName = () => playerName;
+        const changeName = (newPlayerName) => playerName = newPlayerName;
 
-        return {switchTurn, getIsTurn};
+        return {switchTurn, getIsTurn, getName, changeName};
     }
 
     return {Player};
@@ -53,8 +66,8 @@ const players = (() => {
 // 
 
 const playGame = (() => {
-    let player1 = players.Player(true);
-    let player2 = players.Player(false);
+    let player1 = players.Player(true, "Player 1");
+    let player2 = players.Player(false, "Player 2");
 
     const gameText = document.querySelector("p.gameText")
 
@@ -71,7 +84,7 @@ const playGame = (() => {
         [0,4,8]
     ];
 
-     const checkForWin = (board) => {
+     const checkForGameEnd = (board) => {
         for (const [indexA, indexB, indexC] of winningCombos) {
             
             if (board[indexA] == "O" && board[indexB] == "O" && board[indexC] == "O") {
@@ -80,6 +93,10 @@ const playGame = (() => {
                 break;
             } else if (board[indexA] == "X" && board[indexB] == "X" && board[indexC] == "X") {
                 gameText.textContent = "Winner!";
+                gameOver = true;
+                break;
+            } else if (!board.includes(" ")) {
+                gameText.textContent = "The Game was a Tie!";
                 gameOver = true;
                 break;
             }
@@ -91,11 +108,10 @@ const playGame = (() => {
         if (player1.getIsTurn() == true) {
 
             if (gameOver == true) {
-                 gameText.textContent = "The game has ended";
                 return;
            };
 
-             gameText.textContent = "It's player2's turn";
+             gameText.textContent = "It's " + player2.getName() + " turn";
 
              if (parseInt(index) > 8) {
                  gameText.textContent = "Value is outside of the gameboard";
@@ -110,7 +126,7 @@ const playGame = (() => {
             gameBoard.gameBoard[parseInt(index)] = "X";
             gameBoard.display();
            
-            checkForWin(gameBoard.gameBoard);
+            checkForGameEnd(gameBoard.gameBoard);
 
             player1.switchTurn();
             player2.switchTurn();
@@ -118,11 +134,10 @@ const playGame = (() => {
             
         } else if (player2.getIsTurn() == true) {
              if (gameOver == true) {
-                gameText.textContent = "The game has ended";
                 return;
             };
 
-            gameText.textContent = "It's player1's turn";
+            gameText.textContent = "It's " + player1.getName() + " turn";
             
             if (parseInt(index) > 8) {
                 gameText.textContent = "Value is outside of the 0-8 length index";
@@ -137,7 +152,7 @@ const playGame = (() => {
             gameBoard.gameBoard[parseInt(index)] = "O";
             gameBoard.display();
 
-            checkForWin(gameBoard.gameBoard);
+            checkForGameEnd(gameBoard.gameBoard);
 
             player1.switchTurn();
             player2.switchTurn();
@@ -148,9 +163,9 @@ const playGame = (() => {
 
     for (const square of gameBoard.gridSquares) {
         square.addEventListener("click", ()=>{
-            let index = gameBoard.gridSquares.indexOf(square)
+            let index = gameBoard.gridSquares.indexOf(square);
             playRound(index);
-            square.textContent = gameBoard.gameBoard[index]
-        })
-    }
+            square.textContent = gameBoard.gameBoard[index];
+        });
+    };
 })();

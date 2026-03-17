@@ -37,8 +37,8 @@ p.gameText {
 
     color: blanchedalmond;
     
-    font-size: 4rem;
-    
+    font-size: 3rem;
+
     align-items: center;
     justify-content: center;
 }
@@ -65,4 +65,23 @@ div.changePlayerName {
 
     justify-content: center;
     align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: space-between;
+    align-items: center;
+
+    height: 30vh;
+}
+
+form button {
+    padding: 3vh 4vw;
+    border: 0.4rem solid black;
+
+    color: black;
+    font-size: 1rem;
+
 }
