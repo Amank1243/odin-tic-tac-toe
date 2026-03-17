@@ -8,6 +8,8 @@ const gameBoard = (()=> {
     const grid = document.querySelector(".gameboard");
     const changeNameButton = document.querySelector("button.changePlayerName");
     const modal = document.querySelector("dialog");
+    const player1Input = document.querySelector("#Player1");
+    const player2Input = document.querySelector("#Player2");
     const submitButton = document.querySelector("button.submit");
 
     let gridSquares = [];
@@ -33,12 +35,27 @@ const gameBoard = (()=> {
         modal.showModal();
     });
 
-    submitButton.addEventListener("click", (event)=>{
-        event.preventDefault();
-        modal.close();
-    })
+    let changePlayerName = (player1, player2)=> {
+        
+        submitButton.addEventListener("click", (event)=>{
+            event.preventDefault();
 
-    return {gameBoard, display, gridSquares};
+            if (player1Input.value != "") {
+                 player1.changeName(player1Input.value)
+            } else {
+                player1.getName();
+            }
+
+           if (player2Input.value != "") {
+                 player2.changeName(player2Input.value)
+            } else {
+                player1.getName();
+            }
+
+            modal.close();
+    })
+};
+    return {gameBoard, display, gridSquares, changePlayerName};
 })();
 
 // 
@@ -84,6 +101,8 @@ const playGame = (() => {
         [0,4,8]
     ];
 
+    gameBoard.changePlayerName(player1, player2);
+
      const checkForGameEnd = (board) => {
         for (const [indexA, indexB, indexC] of winningCombos) {
             
@@ -111,7 +130,7 @@ const playGame = (() => {
                 return;
            };
 
-             gameText.textContent = "It's " + player2.getName() + " turn";
+             gameText.textContent = "It's " + player2.getName() + "'s turn";
 
              if (parseInt(index) > 8) {
                  gameText.textContent = "Value is outside of the gameboard";
@@ -137,7 +156,7 @@ const playGame = (() => {
                 return;
             };
 
-            gameText.textContent = "It's " + player1.getName() + " turn";
+            gameText.textContent = "It's " + player1.getName() + "'s turn";
             
             if (parseInt(index) > 8) {
                 gameText.textContent = "Value is outside of the 0-8 length index";
