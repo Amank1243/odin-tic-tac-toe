@@ -11,6 +11,7 @@ const gameBoard = (()=> {
     const player1Input = document.querySelector("#Player1");
     const player2Input = document.querySelector("#Player2");
     const submitButton = document.querySelector("button.submit");
+    const resetButton = document.querySelector("button.resetButton");
 
     let gridSquares = [];
 
@@ -53,9 +54,28 @@ const gameBoard = (()=> {
             }
 
             modal.close();
-    })
-};
-    return {gameBoard, display, gridSquares, changePlayerName};
+        })
+    };
+    let resetGame = (player1, player2, over, gameText) => {
+        resetButton.addEventListener("click", ()=>{
+            gameBoard.fill(" ");
+
+            for (const square of gridSquares) {
+                square.textContent = gameBoard[gridSquares.indexOf(square)];
+            };
+
+            player1.changeName("Player 1");
+            player2.changeName("Player 2");
+
+            over = false;
+
+            player1.setTurn(true);
+            player2.setTurn(false);
+
+            gameText.textContent = "Player 1's Turn";
+        });
+    }
+    return {gameBoard, display, gridSquares, changePlayerName, resetGame};
 })();
 
 // 
@@ -67,11 +87,12 @@ const players = (() => {
     const Player = (isTurn, playerName) => {
         const switchTurn = () => isTurn = !isTurn;
         const getIsTurn = () => isTurn;
+        const setTurn = (boolean) => isTurn = boolean;
 
         const getName = () => playerName;
         const changeName = (newPlayerName) => playerName = newPlayerName;
 
-        return {switchTurn, getIsTurn, getName, changeName};
+        return {switchTurn, getIsTurn, getName, changeName, setTurn};
     }
 
     return {Player};
@@ -83,12 +104,15 @@ const players = (() => {
 // 
 
 const playGame = (() => {
+
     let player1 = players.Player(true, "Player 1");
     let player2 = players.Player(false, "Player 2");
 
     const gameText = document.querySelector("p.gameText")
 
     let gameOver = false;
+
+    gameBoard.resetGame(player1, player2, gameOver, gameText);
 
     const winningCombos = [
         [0,1,2],
@@ -122,15 +146,15 @@ const playGame = (() => {
         }
     };
 
-    let playRound = (index) => {
+    const playRound = (index) => {
        
         if (player1.getIsTurn() == true) {
 
-            if (gameOver == true) {
-                return;
-           };
+        //     if (gameOver == true) {
+        //         return;
+        //    };
 
-             gameText.textContent = "It's " + player2.getName() + "'s turn";
+             gameText.textContent = player2.getName() + "'s Turn";
 
              if (parseInt(index) > 8) {
                  gameText.textContent = "Value is outside of the gameboard";
@@ -152,11 +176,11 @@ const playGame = (() => {
 
             
         } else if (player2.getIsTurn() == true) {
-             if (gameOver == true) {
-                return;
-            };
+            //  if (gameOver == true) {
+            //     return;
+            // };
 
-            gameText.textContent = "It's " + player1.getName() + "'s turn";
+            gameText.textContent = player1.getName() + "'s Turn";
             
             if (parseInt(index) > 8) {
                 gameText.textContent = "Value is outside of the 0-8 length index";
@@ -182,9 +206,17 @@ const playGame = (() => {
 
     for (const square of gameBoard.gridSquares) {
         square.addEventListener("click", ()=>{
+            if (gameOver == true) {
+                return;
+            }
+
+
             let index = gameBoard.gridSquares.indexOf(square);
             playRound(index);
             square.textContent = gameBoard.gameBoard[index];
         });
     };
+
+    return {gameOver};
+
 })();

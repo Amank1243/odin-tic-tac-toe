@@ -43,7 +43,7 @@ p.gameText {
     justify-content: center;
 }
 
-button.changePlayerName {
+button {
 
     background-color: black;
     border: 0.1rem solid blanchedalmond;
@@ -63,7 +63,7 @@ div.changePlayerName {
 
     margin-top: 3vh;
 
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -79,7 +79,9 @@ form {
 
 form button {
     padding: 3vh 4vw;
-    border: 0.4rem solid black;
+    border: 0.2rem solid black;
+
+    background-color: blanchedalmond;
 
     color: black;
     font-size: 1rem;
