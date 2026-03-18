@@ -137,18 +137,26 @@ const playGame = (() => {
             
             if (board[indexA] == "O" && board[indexB] == "O" && board[indexC] == "O") {
                 gameText.textContent = "Winner!";
+                console.log("Winner");
                 gameOver = true;
-                break;
-            } else if (board[indexA] == "X" && board[indexB] == "X" && board[indexC] == "X") {
+                return;
+            }  
+            
+            if (board[indexA] == "X" && board[indexB] == "X" && board[indexC] == "X") {
                 gameText.textContent = "Winner!";
+                console.log("Winner");
                 gameOver = true;
-                break;
-            } else if (!board.includes(" ")) {
-                gameText.textContent = "The Game was a Tie!";
-                gameOver = true;
-                break;
+                return;
             }
         }
+            
+            if (!board.includes(" ")) {
+                gameText.textContent = "The Game was a Tie!";
+                console.log("Tie");
+                gameOver = true;
+                return;
+            }
+        
     };
 
     const playRound = (index) => {
