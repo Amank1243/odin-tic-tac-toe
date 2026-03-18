@@ -56,7 +56,7 @@ const gameBoard = (()=> {
             modal.close();
         })
     };
-    let resetGame = (player1, player2, over, gameText) => {
+    let resetGame = (player1, player2, setGameOver, gameText) => {
         resetButton.addEventListener("click", ()=>{
             gameBoard.fill(" ");
 
@@ -67,7 +67,7 @@ const gameBoard = (()=> {
             player1.changeName("Player 1");
             player2.changeName("Player 2");
 
-            over = false;
+            setGameOver(false);
 
             player1.setTurn(true);
             player2.setTurn(false);
@@ -112,7 +112,12 @@ const playGame = (() => {
 
     let gameOver = false;
 
-    gameBoard.resetGame(player1, player2, gameOver, gameText);
+    gameBoard.resetGame(
+        player1,
+        player2,
+        (value) => gameOver = value,
+        gameText
+    );
 
     const winningCombos = [
         [0,1,2],
@@ -150,9 +155,9 @@ const playGame = (() => {
        
         if (player1.getIsTurn() == true) {
 
-        //     if (gameOver == true) {
-        //         return;
-        //    };
+            if (gameOver == true) {
+                return;
+           };
 
              gameText.textContent = player2.getName() + "'s Turn";
 
@@ -216,7 +221,5 @@ const playGame = (() => {
             square.textContent = gameBoard.gameBoard[index];
         });
     };
-
-    return {gameOver};
 
 })();
