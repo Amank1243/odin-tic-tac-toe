@@ -43,14 +43,10 @@ const gameBoard = (()=> {
 
             if (player1Input.value != "") {
                  player1.changeName(player1Input.value)
-            } else {
-                player1.getName();
             }
 
            if (player2Input.value != "") {
                  player2.changeName(player2Input.value)
-            } else {
-                player1.getName();
             }
 
             modal.close();
